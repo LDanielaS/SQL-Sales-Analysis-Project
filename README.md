@@ -70,7 +70,7 @@ Este proyecto busca responder estas preguntas mediante un análisis estructurado
 
 La construcción de un análisis en SQL para el seguimiento del rendimiento de ventas permitió obtener una visión clara sobre los principales impulsores de ingresos, el comportamiento de los clientes y los patrones de crecimiento de la empresa. Al centralizar esta información, los encargados pueden comprender mejor de dónde provienen los ingresos, quiénes son los clientes más valiosos y cómo evolucionan las ventas en el tiempo.
 
-![Imagen1.jpg](An%C3%A1lisis%20de%20Ventas%20y%20Customer%20Insights%20con%20SQL/Imagen1.jpg)
+![Imagen1.jpg](https://github.com/LDanielaS/SQL-Sales-Analysis-Project/blob/b2042096f4b0224c4f39f5c4d5d7734030e94419/Imagen1.jpg)
 
 Este análisis reveló que la empresa generó un ingreso total de **$77,903**, con un ticket promedio de **$259**, lo que indica un modelo de negocio basado en transacciones de valor medio a gran escala, en lugar de pocas ventas de alto valor.
 
