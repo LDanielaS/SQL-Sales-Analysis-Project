@@ -1,243 +1,114 @@
-# Proyecto 1 -Análisis de datos
+# Análisis de Ventas y Customer Insights con SQL
 
-- “codigo que crea nuevo id del 1- en adelante para agregar los datos (no usado)
-    
-    ```sql
-    INSERT INTO Customers (Id_Customer, Name_Customer, City_Customer)
-    SELECT 
-        ROW_NUMBER() OVER () AS Id_Customer,
-        `Customer Name`,
-        City
-    FROM (
-        SELECT DISTINCT `Customer Name`, City
-        FROM sample__superstore
-    ) AS unique_customers;
-    ```
-    
+## Resumen Ejecutivo
 
-- Esto es para ajustar que siempre la lectura de datos sea asi con . y no ,:
-    
-    ```sql
-    LOAD DATA INFILE 'archivo.csv'
-    INTO TABLE tu_tabla
-    FIELDS TERMINATED BY ','
-    LINES TERMINATED BY '\n'
-    IGNORE 1 ROWS
-    (@columna)
-    SET tu_columna = REPLACE(@columna, ',', '.');
-    ```
-    
+Utilizando SQL como herramienta principal de análisis, se exploraron los datos de ventas de una empresa con el objetivo de identificar los principales impulsores de ingresos, patrones de compra y oportunidades de crecimiento.
 
-**Proyecto: Análisis de ventas con SQL**
+A través de este análisis, se logró obtener visibilidad sobre el desempeño de productos, ciudades y clientes, así como sobre la evolución mensual de las ventas. Los hallazgos evidencian oportunidades claras para optimizar la retención de clientes, fortalecer mercados clave y mejorar la estabilidad de los ingresos.
 
-- Modelado de base de datos relacional
-- Análisis de ventas, clientes y productos
-- Identificación de tendencias y métricas clave
-- Uso de JOIN, GROUP BY y funciones ventana (LAG)
+Como resultado, se proponen estrategias enfocadas en:
 
-Creación y modificación de tablas:
+1. Incrementar la fidelización de clientes de alto valor
+2. Potenciar productos con mayor demanda
+3. Expandir el rendimiento en ciudades clave
+4. Reducir la volatilidad en los ingresos mensuales
 
-```sql
-CREATE TABLE Customers(
-    Id_Customer int,
-    Name_Customer varchar(100),
-    City_Customer varchar(50));
-    
-CREATE TABLE Products(
-    Id_Product int,
-    Name_Product varchar(100),
-    Category_Product varchar(100),
-    Price_Product decimal(19, 4));
-    
-CREATE TABLE Sales(
-    Id_Sale int,
-    Id_Customer int,
-    Id_Product int,
-    Date_Sale date,
-    Quantity_Sold int);
-    
-ALTER TABLE Customers
-MODIFY Id_Customer char(8);
+---
 
-ALTER TABLE Products
-MODIFY Id_Product varchar(20);
+## Problema Empresarial
 
-ALTER TABLE Sales
-MODIFY Id_Sale varchar(20);
+El crecimiento sostenible de la empresa depende directamente de su capacidad para generar ingresos de manera constante y escalable. Sin embargo, existen señales de ineficiencia en la distribución de ventas, concentración de ingresos en pocos clientes y variabilidad significativa entre periodos.
 
-ALTER TABLE Products
-MODIFY Name_Product varchar();
-```
+Los stakeholders enfrentan el siguiente desafío:
 
-Para insertar los datos de id,nombre y ciudad de cliente desde la tabla sample_cvs hasta la tabla Customers:
+- ¿Cómo identificar los principales factores que impulsan las ventas?
+- ¿Qué clientes, productos y ciudades generan mayor valor?
+- ¿Dónde existen oportunidades de crecimiento o riesgos de dependencia?
+- ¿Cómo reducir la variabilidad en los ingresos y mejorar la predictibilidad del negocio?
 
-```sql
-INSERT INTO Customers (Id_Customer, Name_Customer, City_Customer) #tabla nuestra
-SELECT DISTINCT 
-    `Customer ID`, #tabla de origen
-    `Customer Name`,
-    City
-FROM sample_cvs; 
-```
+Este proyecto busca responder estas preguntas mediante un análisis estructurado de datos que permita tomar decisiones estratégicas basadas en evidencia.
 
-```sql
-INSERT INTO Products (Id_Product, Name_Product, Category_Product) #tabla nuestra
-SELECT DISTINCT 
-    `Product ID`, #tabla de origen
-    `Product Name`,
-    Category
-FROM sample_cvs; 
-```
+---
 
-```sql
-INSERT INTO Sales (
-    Id_Sale, Id_Customer, Id_Product, Date_Sale, Quantity_Sold, Unit_Price, Discount, Profit, Sales_T
-)
-SELECT
-    `Order ID`,
-    `Customer ID`,
-    `Product ID`,
-    STR_TO_DATE(`Order Date`, '%m/%d/%Y'),
-    Quantity,
-    Sales / Quantity AS Unit_Price,
-    Discount,
-    Profit,
-    Sales
-FROM sample_cvs;INSERT INTO Sales (
-    Id_Sale, Id_Customer, Id_Product, Date_Sale, Quantity_Sold, Unit_Price, Discount, Profit, Sales_T
-)
-SELECT
-    `Order ID`,
-    `Customer ID`,
-    `Product ID`,
-    STR_TO_DATE(`Order Date`, '%m/%d/%Y'),
-    Quantity,
-    Sales / Quantity AS Unit_Price,
-    Discount,
-    Profit,
-    Sales
-FROM sample_cvs;
-```
+## Metodología
 
-Para la tabla Sales, primero se modifico agregando nuevas columnas:
+1. **Extracción y Transformación de Datos (SQL):** Se realizaron consultas SQL para limpiar, transformar y consolidar la información proveniente de múltiples tablas (ventas, clientes y productos), utilizando joins, agregaciones y funciones analíticas.
+2. **Análisis Exploratorio de Datos:** Se calcularon métricas clave como:
+    - Ventas totales
+    - Ticket promedio
+    - Ventas por producto
+    - Ventas por ciudad
+    - Clientes con mayor contribución
+3. **Análisis de Tendencias Temporales:** Se evaluó el comportamiento mensual de las ventas mediante funciones de ventana (como `LAG`) para identificar patrones de crecimiento, caídas y volatilidad.
+4. **Generación de Insights de Negocio:** A partir de los resultados obtenidos, se identificaron oportunidades estratégicas y se formularon recomendaciones orientadas a mejorar el rendimiento comercial y la toma de decisiones.
 
-```sql
-ALTER TABLE Sales
-ADD Discount decimal(10,5); 
-```
+---
 
-```sql
-ALTER TABLE Sales
-MODIFY Id_Customer CHAR(8),
-MODIFY Id_Product VARCHAR(20);
-```
+## Skills
 
-Luego se cambio , por puntos
+#### **Lenguajes y herramientas:**
 
-```sql
-UPDATE sample_cvs
-SET Discount = REPLACE(Discount, ',', '.');
+- SQL (nivel intermedio)
 
-UPDATE sample_cvs
-SET Sales = REPLACE(Sales, ',', '.');
+#### **Técnicas aplicadas:**
 
-UPDATE sample_cvs
-SET Profit = REPLACE(Profit, ',', '.');
-```
+- Joins (INNER JOIN)
+- Funciones de agregación (SUM, AVG)
+- Funciones de ventana (LAG)
+- Agrupaciones y ordenamiento de datos
+- Transformación y limpieza de datos
 
-Y se cambio formato de origen y de llegada a numeros
+#### **Análisis de datos:**
 
-```sql
-ALTER TABLE sample_cvs
-MODIFY Discount decimal(10,5);
-```
+- Análisis de ventas
+- Segmentación de clientes
+- Identificación de patrones de consumo
+- Análisis temporal (time series básico)
+- Generación de insights accionables
 
-Para las fechas, primero se creo una nueva columna, luego se extraen los datos de la columna original para imprimir en el orden general del SQL (Año/Mes/Dia)
+## Resultados y Recomendaciones Empresariales
 
-```sql
-ALTER TABLE sample_cvs 
-ADD order_date_new DATE;
+La construcción de un análisis en SQL para el seguimiento del rendimiento de ventas permitió obtener una visión clara sobre los principales impulsores de ingresos, el comportamiento de los clientes y los patrones de crecimiento de la empresa. Al centralizar esta información, los encargados pueden comprender mejor de dónde provienen los ingresos, quiénes son los clientes más valiosos y cómo evolucionan las ventas en el tiempo.
 
-UPDATE sample_cvs
-SET order_date_new = STR_TO_DATE(`Order Date`, '%m/%d/%Y');
-```
+![Imagen1.jpg](An%C3%A1lisis%20de%20Ventas%20y%20Customer%20Insights%20con%20SQL/Imagen1.jpg)
 
-### Analisis de datos en practica
+Este análisis reveló que la empresa generó un ingreso total de **$77,903**, con un ticket promedio de **$259**, lo que indica un modelo de negocio basado en transacciones de valor medio a gran escala, en lugar de pocas ventas de alto valor.
 
-Para analizar los datos obtenidos en cada tabla, primero se obtiene:
+Desde la perspectiva de productos, las ventas se encuentran relativamente distribuidas entre múltiples artículos, con los productos más vendidos alcanzando entre **8 y 16 unidades**. Esto sugiere un portafolio diversificado, lo que reduce la dependencia de un solo producto, pero también evidencia la ausencia de un “producto estrella” que impulse significativamente los ingresos.
 
-- Ventas totales de la empresa:
-    
-    ```sql
-    SELECT SUM(Sales_T) AS Total_Sales
-    FROM Sales;
-    ```
-    
-    ![image.png](Proyecto%201%20-An%C3%A1lisis%20de%20datos/image.png)
-    
-- Productos organizados con el que tiene mas ventas:
-    
-    (El s y p son “alias” de las tablas Sales y Products que son designadas en FROM Sales s y JOIN products p, luego toma el nombre de p y la cantidad de ventas de s, luego UNE ambas tablas con JOIN donde la condicion ON se cumpla, es decir donde los Id de la tabla s sean iguales a los Id de la p, luego lo agrupa por nombres y por ultimo los ordena de forma descendente) 
-    
-    ```sql
-    SELECT 
-        p.Name_Product,
-        SUM(s.Quantity_Sold) AS Total_Sales_Product
-    FROM Sales s
-    JOIN Products p ON s.Id_Product = p.Id_Product
-    GROUP BY p.Name_Product
-    ORDER BY Total_Sales_Product DESC;
-    ```
-    
-    ![image.png](Proyecto%201%20-An%C3%A1lisis%20de%20datos/image%201.png)
-    
-- Ventas por ciudad
-    
-    ```sql
-    SELECT 
-        c.City_Customer,
-        SUM(s.Sales_T) AS Total_Sales
-    FROM Sales s
-    JOIN Customers c ON s.Id_Customer = c.Id_Customer
-    GROUP BY c.City_Customer
-    ORDER BY Total_Sales DESC;
-    ```
-    
-    ![image.png](Proyecto%201%20-An%C3%A1lisis%20de%20datos/image%202.png)
-    
-- Mejores clientes
-    
-    ```sql
-    SELECT 
-        c.Name_Customer,
-        SUM(s.Sales_T) AS Total_Purchased
-    FROM Sales s
-    JOIN Customers c ON s.Id_Customer = c.Id_Customer
-    GROUP BY c.Name_Customer
-    ORDER BY Total_Purchased DESC;
-    ```
-    
-    ![image.png](Proyecto%201%20-An%C3%A1lisis%20de%20datos/image%203.png)
-    
-- Valor promedio de ticket de venta
-    
-    ```sql
-    SELECT 
-        AVG(Sales_T) AS Average_Ticket
-    FROM Sales;
-    ```
-    
-    ![image.png](Proyecto%201%20-An%C3%A1lisis%20de%20datos/image%204.png)
-    
-- Crecimiento mensual de la empresa
-    
-    ```sql
-    SELECT 
-        DATE_FORMAT(Date_Sale, '%Y-%m') AS Month,
-        SUM(Sales_T) AS Sales_Month,
-        LAG(SUM(Sales_T)) OVER (ORDER BY DATE_FORMAT(Date_Sale, '%Y-%m')) AS Previous_month
-    FROM Sales
-    GROUP BY Month;
-    ```
-    
-    ![image.png](Proyecto%201%20-An%C3%A1lisis%20de%20datos/image%205.png)
+A nivel geográfico, los ingresos están altamente concentrados en unas pocas ciudades clave. **Houston y San Antonio representan la mayor proporción de ventas**, seguidas por ciudades como Los Ángeles y Filadelfia. Esto indica un fuerte desempeño regional, pero también revela una oportunidad importante de expansión en mercados con menor rendimiento.
+
+El análisis de clientes muestra que un grupo reducido concentra una parte significativa de los ingresos. El cliente principal generó más de **$11,000**, lo que confirma una distribución tipo **Pareto**, donde una minoría de clientes aporta la mayor parte de las ventas. Esto representa una oportunidad clara de fidelización, pero también un riesgo por dependencia.
+
+Adicionalmente, el comportamiento mensual de las ventas presenta **alta volatilidad**, con incrementos y caídas pronunciadas entre periodos. Esto sugiere que los ingresos están influenciados por patrones de demanda inconsistentes, posiblemente relacionados con estacionalidad, campañas puntuales o falta de estrategias de retención.
+
+---
+
+### Conocimiento clave del Negocio
+
+Las mayores oportunidades de crecimiento se encuentran en:
+
+- Incrementar la retención de clientes
+- Expandir los mercados con alto rendimiento
+- Mejorar la estabilidad de los ingresos en el tiempo
+
+---
+
+### Recomendaciones Empresariales
+
+Dado que el mayor impacto en ingresos provendrá de mejorar la retención de clientes, la expansión geográfica y la consistencia en el comportamiento de compra, se recomiendan las siguientes acciones estratégicas:
+
+1. **Fortalecer la Retención de Clientes (Alto Impacto):** Identificar clientes de alto valor e implementar estrategias de fidelización como ofertas personalizadas, descuentos exclusivos o acceso anticipado a productos para aumentar la recurrencia de compra.
+2. **Desarrollar una Estrategia de “Producto Estrella”:** Impulsar los productos más vendidos mediante campañas de marketing dirigidas y optimización de precios para convertirlos en los principales generadores de ingresos.
+3. **Expandir Mercados de Alto Rendimiento:** Replicar las estrategias exitosas de ciudades como Houston y San Antonio en otras regiones mediante campañas localizadas y segmentación estratégica.
+4. **Estabilizar los Ingresos Mensuales:** Implementar campañas mensuales constantes, modelos de suscripción o incentivos de compra recurrente que reduzcan la volatilidad y generen ingresos más predecibles.
+5. **Incrementar el Ticket Promedio:** Aplicar estrategias de upselling y cross-selling, como paquetes de productos o descuentos por volumen, para incentivar un mayor gasto por transacción.
+
+---
+
+## Siguientes Pasos
+
+- Crear dashboards para visualizar las ventas y facilitar la toma de decisiones.
+- Aplicar estrategias de fidelización para clientes frecuentes.
+- Potenciar los productos más vendidos con promociones.
+- Implementar campañas para aumentar ventas en ciudades con bajo rendimiento.
